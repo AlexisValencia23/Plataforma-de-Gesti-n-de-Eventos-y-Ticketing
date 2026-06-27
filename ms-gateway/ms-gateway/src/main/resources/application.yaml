@@ -1,0 +1,62 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-usuarios
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/usuarios/**
+
+        - id: ms-eventos
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/eventos/**
+
+        - id: ms-tickets
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/tickets/**
+
+        - id: ms-pagos
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/pagos/**
+
+        - id: ms-lugares
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/lugares/**
+
+        - id: ms-categorias
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/categorias/**
+
+        - id: ms-reservas
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/reservas/**
+
+        - id: ms-notificaciones
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/notificaciones/**
+
+        - id: ms-reportes
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/reportes/**
+
+        - id: ms-descuentos
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/descuentos/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
