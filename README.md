@@ -167,3 +167,6 @@ Una vez iniciados todos los servicios, se puede acceder a través del Gateway en
 - Respuestas REST con ResponseEntity y códigos HTTP correctos
 - Documentación técnica con Swagger/OpenAPI 3.0
 - Pruebas unitarias con JUnit 5 y Mockito (62 tests)
+
+## Gestión del Proyecto
+- Tablero Trello: https://trello.com/invite/b/6a44a6d30d25f807e57a66db/ATTI710c958c0f8be0f38cb04ed10100d0da0463E5B3/plataforma-de-gestion-de-eventos-y-ticketing-dsy1103
