@@ -1,0 +1,190 @@
+version: '3.8'
+
+services:
+  # --- BASE DE DATOS CENTRALIZADA ---
+  db-mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_plataforma_eventos
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ticketing-network
+
+  # --- MICROSERVICIOS ---
+
+  ms-usuarios:
+    build:
+      context: ./ms-usuarios
+    container_name: ms-usuarios-container
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-eventos:
+    build:
+      context: ./ms-eventos
+    container_name: ms-eventos-container
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-tickets:
+    build:
+      context: ./ms-tickets
+    container_name: ms-tickets-container
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-pagos:
+    build:
+      context: ./ms-pagos
+    container_name: ms-pagos-container
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-lugares:
+    build:
+      context: ./ms-lugares
+    container_name: ms-lugares-container
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-categorias:
+    build:
+      context: ./ms-categorias
+    container_name: ms-categorias-container
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-reservas:
+    build:
+      context: ./ms-reservas
+    container_name: ms-reservas-container
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-notificaciones:
+    build:
+      context: ./ms-notificaciones
+    container_name: ms-notificaciones-container
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-reportes:
+    build:
+      context: ./ms-reportes
+    container_name: ms-reportes-container
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  ms-descuentos:
+    build:
+      context: ./ms-descuentos
+    container_name: ms-descuentos-container
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db-mysql
+    networks:
+      - ticketing-network
+
+  # --- API GATEWAY ---
+  ms-gateway:
+    build:
+      context: ms-gateway
+    container_name: ms-gateway-container
+    ports:
+      - "8091:8091"
+    depends_on:
+      - ms-usuarios
+      - ms-eventos
+      - ms-tickets
+    networks:
+      - ticketing-network
+
+# --- CONFIGURACIÓN DE RED Y VOLÚMENES ---
+networks:
+  ticketing-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
