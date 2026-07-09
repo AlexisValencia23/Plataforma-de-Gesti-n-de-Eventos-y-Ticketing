@@ -1,17 +1,18 @@
 version: '3.8'
 
 services:
-  # --- BASE DE DATOS CENTRALIZADA ---
-  db-mysql:
-    image: mysql:8.0
-    container_name: mysql-container
+  # --- BASE DE DATOS CENTRALIZADA POSTGRESQL (REEMPLAZA A MYSQL) ---
+  db-postgres:
+    image: postgres:15
+    container_name: postgres-container
     ports:
-      - "3307:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db_plataforma_eventos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: eventos_db
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - ticketing-network
 
@@ -24,11 +25,11 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -39,11 +40,11 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -54,11 +55,11 @@ services:
     ports:
       - "8083:8083"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -69,11 +70,11 @@ services:
     ports:
       - "8084:8084"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -84,11 +85,11 @@ services:
     ports:
       - "8085:8085"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -99,11 +100,11 @@ services:
     ports:
       - "8086:8086"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -114,11 +115,11 @@ services:
     ports:
       - "8087:8087"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -129,11 +130,11 @@ services:
     ports:
       - "8088:8088"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -144,11 +145,11 @@ services:
     ports:
       - "8089:8089"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
@@ -159,15 +160,15 @@ services:
     ports:
       - "8090:8090"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/db_plataforma_eventos
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:postgresql://db-postgres:5432/eventos_db
+      - DB_USER=postgres
+      - DB_PASSWORD=root
     depends_on:
-      - db-mysql
+      - db-postgres
     networks:
       - ticketing-network
 
-  # --- API GATEWAY ---
+  # --- API GATEWAY (MANTENIDO SIN CAMBIOS DE BD) ---
   ms-gateway:
     build:
       context: ms-gateway
@@ -187,4 +188,4 @@ networks:
     driver: bridge
 
 volumes:
-  mysql_data:
+  postgres_data:
